@@ -32,8 +32,6 @@ def get_fruityvice_data(this_fruit_choice):
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
    return(fruityvice_normalized)
 
-# challenge code
-
 #New Section to display fruityvice api response
   
 streamlit.header("Fruityvice Fruit Advice!") 
@@ -45,19 +43,8 @@ try:
     back_from_function = get_fruityvice_data(fruit_choice)
     streamlit.dataframe(back_from_function)
 
-
-# dont run anything past here while we troubleshoot
-streamlit.stop()
-
-#import snowflake.connector
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
-my_data_rows = my_cur.fetchall()
-streamlit.header("Hello from Snowflake:")
-streamlit.dataframe(my_data_rows)
-
+#add a button to load the fruit
+if streamlit.button('Get
 #allow the end user to add a fruit to the list
 def insert_row_snowflake(new_fruit):
   with my_cnx.cursor() as my_cur:
@@ -69,6 +56,26 @@ if streamlit.button('Add a Fruit to the List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   back_from_function = insert_row_snowflake(add_my_fruit)
   streamlit.text(back_from_function)
+  
+#allow the end user to add a fruit to the list
+def insert_row_snowflake(new_fruit):
+  with my_cnx.cursor() as my_cur
+    my_cur.execute("insert into fruit_load_list values ('" + add_my_fruit + "')")
+    return "Thanks for adding " + new_fruit
 
+# dont run anything past here while we troubleshoot
+streamlit.stop()
 #this will not work correctly
 my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+
+
+#import snowflake.connector
+
+my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+my_cur = my_cnx.cursor()
+my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
+my_data_rows = my_cur.fetchall()
+streamlit.header("Hello from Snowflake:")
+streamlit.dataframe(my_data_rows)
+
+
